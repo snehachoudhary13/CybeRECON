@@ -1,5 +1,5 @@
 """
-CyberRecon Academy — DNS Reconnaissance
+cybeRECON — DNS Reconnaissance
 Usage: python tools/dns_tool.py <domain>
 """
 

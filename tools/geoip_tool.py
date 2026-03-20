@@ -1,5 +1,5 @@
 """
-CyberRecon Academy — IP Geolocation & ASN
+cybeRECON — IP Geolocation & ASN
 Usage: python tools/geoip_tool.py <ip_or_domain>
 """
 

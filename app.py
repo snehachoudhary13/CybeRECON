@@ -14,6 +14,7 @@
 ╚══════════════════════════════════════════════════════╝
 """
 
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -98,7 +99,7 @@ def threat_route():
 @app.route("/")
 def index():
     return jsonify({
-        "status":  "cybeRECON ACADEMY BACKEND ONLINE",
+        "status":  "cybeRECON BACKEND ONLINE",
         "routes":  ["/api/ssl", "/api/headers", "/api/whois",
                     "/api/geoip", "/api/dns", "/api/threat"],
         "abuseipdb": "configured" if ABUSEIPDB_API_KEY != "YOUR_ABUSEIPDB_KEY_HERE" else "not configured (optional)"
@@ -106,8 +107,9 @@ def index():
 
 if __name__ == "__main__":
     print("\n" + "═" * 52)
-    print("  cybeRECON ACADEMY — Backend Server")
+    print("  cybeRECON — Backend Server")
     print("  Running on http://localhost:5000")
     print("  Press Ctrl+C to stop")
     print("═" * 52 + "\n")
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host="0.0.0.0", port=port, threaded=True)

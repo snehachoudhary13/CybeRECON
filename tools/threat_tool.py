@@ -1,5 +1,5 @@
 """
-CyberRecon Academy — Threat Intelligence
+cybeRECON — Threat Intelligence
 Usage: python tools/threat_tool.py <ip_or_domain>
 
 Tier 1 (free / no key): ip-api.com — proxy, VPN, datacenter detection

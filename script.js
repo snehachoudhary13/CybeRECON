@@ -115,7 +115,7 @@ document.addEventListener('dblclick', function(e) {
 
 // ─── INTRO SEQUENCE (queue-based, double-click to advance) ───
 const INTRO_LINES = [
-  "Hello, Operative. I am Lilith — your AI instructor at cybeRECON Academy.",
+  "Hello, Operative. I am Lilith — your AI instructor at cybeRECON.",
   "This platform teaches real-world OSINT, network recon, and threat intelligence.",
   "Golden rule: only scan systems you own or have explicit written permission to test.",
   "Let's begin. Paste any URL into Tool 1 below and I'll walk you through it.",

@@ -1,5 +1,5 @@
 """
-CyberRecon Academy — WHOIS Intelligence
+cybeRECON — WHOIS Intelligence
 Usage: python tools/whois_tool.py <domain>
 """
 
