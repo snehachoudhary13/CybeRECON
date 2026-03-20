@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CybeRECON Academy — Hack The Planet</title>
+  <meta name="description" content="CybeRECON Academy — Cyberpunk hacker training ground."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="intro-active">
+
+<!-- Canvas: Matrix Rain -->
+<canvas id="matrixCanvas"></canvas>
+
+<!-- Grid Overlay & Scan Line -->
+<div class="grid-overlay"></div>
+<div class="scan-line"></div>
+<div class="particle-corner" id="particleCorner"></div>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <svg class="hex-icon" viewBox="0 0 50 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="25,2 48,15 48,43 25,56 2,43 2,15" stroke="#00f5ff" stroke-width="2" fill="rgba(0,245,255,0.07)"/>
+        <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="#00f5ff" font-family="Orbitron" font-size="14" font-weight="700">CR</text>
+      </svg>
+      <span class="logo-text">cybeRECON</span>
+    </div>
+    <nav class="nav-pills">
+      <a href="#" class="nav-pill active" id="navDashboard">DASHBOARD</a>
+      <a href="#" class="nav-pill" id="navMissions" onclick="openModal('missions')">MISSIONS</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ARIA-7 FLOATING CONTAINER (Handles Intro -> Sidebar transition) -->
+<div id="ariaFloatingContainer" class="aria-intro-mode">
+  <div class="aria-card" ondblclick="handleAvatarDblClick()" id="ariaCard">
+    <div class="aria-avatar-ring">
+      <div class="aria-avatar" id="ariaAvatar">
+        <svg class="aria-face" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <circle class="outer-ring" cx="60" cy="60" r="56" stroke="#bf00ff" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <circle cx="60" cy="60" r="52" stroke="#00f5ff" stroke-width="0.5" fill="none" opacity="0.3"/>
+          <rect x="22" y="20" width="76" height="72" rx="12" fill="#0a0e1a" stroke="#00f5ff" stroke-width="1.5"/>
+          <rect x="30" y="22" width="60" height="12" rx="4" fill="#060c1a" stroke="#00f5ff" stroke-width="0.8"/>
+          <circle cx="42" cy="28" r="3" fill="#bf00ff" opacity="0.9"/>
+          <circle cx="60" cy="28" r="3" fill="#00f5ff" opacity="0.9"/>
+          <circle cx="78" cy="28" r="3" fill="#00ff88" opacity="0.9"/>
+          
+          <!-- Eyes -->
+          <ellipse cx="42" cy="55" rx="12" ry="9" fill="#060c1a" stroke="#00f5ff" stroke-width="1.2"/>
+          <ellipse cx="78" cy="55" rx="12" ry="9" fill="#060c1a" stroke="#00f5ff" stroke-width="1.2"/>
+          <ellipse cx="42" cy="55" rx="7" ry="6" fill="#00f5ff" opacity="0.8" class="aria-eye-glow"/>
+          <ellipse cx="78" cy="55" rx="7" ry="6" fill="#00f5ff" opacity="0.8" class="aria-eye-glow"/>
+          <circle cx="42" cy="55" r="3" fill="#fff"/>
+          <circle cx="78" cy="55" r="3" fill="#fff"/>
+          
+          <!-- Nose -->
+          <rect x="56" y="63" width="8" height="4" rx="2" fill="#00f5ff" opacity="0.5"/>
+          
+          <!-- Mouth -->
+          <rect x="32" y="72" width="56" height="12" rx="4" fill="#060c1a" stroke="#00ff88" stroke-width="1"/>
+          <g id="ariaMouth">
+            <rect x="36" y="75" width="4" height="6" rx="1" fill="#00ff88" class="mouth-bar"/>
+            <rect x="43" y="74" width="4" height="8" rx="1" fill="#00ff88" class="mouth-bar"/>
+            <rect x="50" y="76" width="4" height="4" rx="1" fill="#00ff88" class="mouth-bar"/>
+            <rect x="57" y="73" width="4" height="10" rx="1" fill="#00ff88" class="mouth-bar"/>
+            <rect x="64" y="75" width="4" height="6" rx="1" fill="#00ff88" class="mouth-bar"/>
+            <rect x="71" y="74" width="4" height="8" rx="1" fill="#00ff88" class="mouth-bar"/>
+            <rect x="78" y="76" width="4" height="4" rx="1" fill="#00ff88" class="mouth-bar"/>
+          </g>
+
+          <!-- Circuits -->
+          <line x1="22" y1="50" x2="10" y2="50" stroke="#bf00ff" stroke-width="1" opacity="0.6"/>
+          <line x1="10" y1="50" x2="10" y2="65" stroke="#bf00ff" stroke-width="1" opacity="0.6"/>
+          <circle cx="10" cy="65" r="2" fill="#bf00ff"/>
+          <line x1="98" y1="50" x2="110" y2="50" stroke="#bf00ff" stroke-width="1" opacity="0.6"/>
+          <line x1="110" y1="50" x2="110" y2="65" stroke="#bf00ff" stroke-width="1" opacity="0.6"/>
+          <circle cx="110" cy="65" r="2" fill="#bf00ff"/>
+          
+          <line x1="60" y1="20" x2="60" y2="8" stroke="#00f5ff" stroke-width="1.5"/>
+          <circle cx="60" cy="6" r="3" fill="#00f5ff" class="antenna-pulse"/>
+        </svg>
+      </div>
+    </div>
+    <div class="aria-name">LILITH</div>
+    <div class="aria-subtitle">AI INSTRUCTOR</div>
+    <div class="aria-status"><span class="status-dot"></span> ONLINE — READY</div>
+
+    <div class="aria-bubble">
+      <div class="bubble-label">[ LILITH SAYS ] <span id="skipHint" class="skip-hint">// double-click to skip</span></div>
+      <p id="ariaMessage"></p>
+      <span class="blinking-cursor">█</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MAIN LAYOUT ═══════════ -->
+<div class="main-layout" id="mainLayout">
+  
+  <!-- ═══ LEFT SIDEBAR (Placeholder for floating ARIA) ═══ -->
+  <aside class="sidebar">
+    <div id="ariaPlaceholder"></div> <!-- ARIA snaps here after intro -->
+
+    <div class="sidebar-section-title mt-4">// MISSION GUIDE</div>
+    <div class="lesson-list">
+      <button class="lesson-btn active" id="btn-recon" onclick="openModal('recon')">
+        <span class="lesson-icon">🌐</span>
+        <span class="lesson-name">1. Network Recon</span>
+      </button>
+      <button class="lesson-btn" id="btn-ssl" onclick="openModal('ssl-lesson')">
+        <span class="lesson-icon">🔐</span>
+        <span class="lesson-name">2. SSL/TLS Audit</span>
+      </button>
+      <button class="lesson-btn" id="btn-osint" onclick="openModal('osint')">
+        <span class="lesson-icon">📡</span>
+        <span class="lesson-name">3. OSINT Fundamentals</span>
+      </button>
+      <button class="lesson-btn" id="btn-darkweb" onclick="openModal('darkweb')">
+        <span class="lesson-icon">🌑</span>
+        <span class="lesson-name">4. Dark Web Mapping</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══ CONTENT AREA ═══ -->
+  <main class="content-area">
+
+    <div class="section-label">// RECON TOOL SUITE</div>
+
+    <div class="tools-grid">
+
+      <!-- TOOL 1: URL INSPECTOR -->
+      <div class="tool-card active-tool" id="tool-1">
+        <div class="card-header">
+          <span class="card-icon">🔍</span>
+          <div class="card-title-group">
+            <span class="card-title">URL INSPECTOR</span>
+            <span class="diff-badge green-badge">BEGINNER</span>
+          </div>
+        </div>
+        
+        <div class="tool-tabs">
+          <button class="tab-btn active" onclick="switchTab(1, 'scan')">SCAN</button>
+          <button class="tab-btn" onclick="switchTab(1, 'learn')">LEARN</button>
+        </div>
+
+        <div class="card-body">
+          <div class="tab-content scan-tab active" id="tab1-scan">
+            <div class="input-row">
+              <span class="input-prompt">>_</span>
+              <input type="text" id="input-url" class="cyber-input" placeholder="Enter target URL (e.g. https://target.com/api?id=1)" autocomplete="off" value="https://target-corp.io/api/v2/users?id=1337"/>
+              <button class="cyber-btn" onclick="runTool(1)">SCAN</button>
+            </div>
+            <div class="terminal-box">
+              <div class="terminal-bar"><span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span><span class="t-title">url_inspector.sh</span></div>
+              <div class="terminal-content" id="term-1">
+                <span class="t-comment">Awaiting target input...</span>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content learn-tab" id="tab1-learn">
+            <div class="learn-content" id="learn1">
+              <div class="learn-intro">Run a scan first to get output-specific explanations below.</div>
+            </div>
+            <hr class="learn-divider"/>
+            <h4 class="learn-heading">🔬 URL ANATOMY EXPLAINED</h4>
+            <p><span class="learn-term">Protocol (HTTP/HTTPS):</span> Determines how data is transmitted. <span class="t-success">HTTPS</span> encrypts the connection using TLS. <span class="t-danger">HTTP</span> sends data as plaintext — any attacker on the same network can read it.</p>
+            <p><span class="learn-term">Domain:</span> The human-readable address of a server. The domain reveals who owns the target and where it's hosted. You can use it to perform WHOIS lookups.</p>
+            <p><span class="learn-term">Port:</span> If not shown, default ports apply — 80 for HTTP, 443 for HTTPS. Non-standard ports like <code>:8080</code> or <code>:3000</code> often indicate development servers exposed accidentally.</p>
+            <p><span class="learn-term">Path:</span> Reveals the API structure. Paths like <code>/api/v2/users</code> tell an attacker which version of the API is running and what resource types exist.</p>
+            <p><span class="learn-term">Query Parameters:</span> Key=value pairs after <code>?</code>. Parameters like <code>id=</code>, <code>user=</code>, <code>token=</code> are prime targets for <span class="t-danger">SQLi</span>, <span class="t-danger">IDOR</span>, and <span class="t-warn">parameter tampering</span>.</p>
+            <p><span class="learn-term">Fragment (#):</span> Processed client-side only, never sent to the server. Used in hash-based routing in Single Page Apps.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOL 2: SSL/TLS INSPECTOR -->
+      <div class="tool-card" id="tool-2">
+        <div class="card-header">
+          <span class="card-icon">🛡️</span>
+          <div class="card-title-group">
+            <span class="card-title">SSL/TLS INSPECTOR</span>
+            <span class="diff-badge yellow-badge">INTERMEDIATE</span>
+          </div>
+        </div>
+        
+        <div class="tool-tabs">
+          <button class="tab-btn active" onclick="switchTab(2, 'scan')">SCAN</button>
+          <button class="tab-btn" onclick="switchTab(2, 'learn')">LEARN</button>
+        </div>
+
+        <div class="card-body">
+          <div class="tab-content scan-tab active" id="tab2-scan">
+            <div class="input-row">
+              <span class="input-prompt">>_</span>
+              <input type="text" id="input-ssl" class="cyber-input" placeholder="Enter domain name..." autocomplete="off"/>
+              <button class="cyber-btn" onclick="runTool(2)">FETCH</button>
+            </div>
+            <div class="terminal-box">
+              <div class="terminal-bar"><span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span><span class="t-title">ssl_fetch.py</span></div>
+              <div class="terminal-content" id="term-2">
+                <span class="t-comment">Awaiting domain target...</span>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content learn-tab" id="tab2-learn">
+            <div class="learn-content" id="learn2"><div class="learn-intro">Run a scan first for output-specific explanations.</div></div>
+            <hr class="learn-divider"/>
+            <h4 class="learn-heading">🔒 SSL/TLS CERTIFICATE EXPLAINED</h4>
+            <p><span class="learn-term">Certificate Status (Valid/Invalid):</span> A valid cert means the server's identity has been verified by a trusted Certificate Authority (CA). An invalid cert can mean it's expired, self-signed, or the domain doesn't match — all are red flags.</p>
+            <p><span class="learn-term">Issuer/CA:</span> The Certificate Authority that signed the cert. <span class="t-success">Let's Encrypt</span> is free and widely trusted. Unfamiliar issuers may indicate self-signed or rogue certificates used in phishing.</p>
+            <p><span class="learn-term">TLS Version:</span> <span class="t-success">TLS 1.3</span> is the modern standard. <span class="t-warn">TLS 1.2</span> is acceptable. <span class="t-danger">TLS 1.0/1.1</span> are deprecated and vulnerable to POODLE and BEAST attacks.</p>
+            <p><span class="learn-term">Cipher Suite:</span> The algorithm combination used for encryption. Strong: <code>AES_256_GCM</code>. Weak/dangerous: <code>RC4</code>, <code>DES</code>, <code>3DES</code> — these can be brute-forced.</p>
+            <p><span class="learn-term">Expiry / Days Remaining:</span> Expired certs break trust and warn users. Attackers can monitor expiry to time domain-hijack attacks or use expired certs as phishing indicators.</p>
+            <p><span class="learn-term">HSTS (Strict-Transport-Security):</span> Forces browers to only use HTTPS for the domain. Without it, a downgrade attack can force the browser to use HTTP, exposing session tokens.</p>
+            <p><span class="learn-term">Security Grade (A+ / F):</span> A combined score based on protocol version, key size, and cipher strength. Grade F means the server is critically insecure.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOL 3: HTTP HEADER ANALYZER -->
+      <div class="tool-card" id="tool-3">
+        <div class="card-header">
+          <span class="card-icon">📡</span>
+          <div class="card-title-group">
+            <span class="card-title">HTTP HEADER ANALYZER</span>
+            <span class="diff-badge green-badge">BEGINNER</span>
+          </div>
+        </div>
+        
+        <div class="tool-tabs">
+          <button class="tab-btn active" onclick="switchTab(3, 'scan')">SCAN</button>
+          <button class="tab-btn" onclick="switchTab(3, 'learn')">LEARN</button>
+        </div>
+
+        <div class="card-body">
+          <div class="tab-content scan-tab active" id="tab3-scan">
+            <div class="input-row">
+              <span class="input-prompt">>_</span>
+              <input type="text" id="input-http" class="cyber-input" placeholder="Enter URL..." autocomplete="off"/>
+              <button class="cyber-btn" onclick="runTool(3)">ANALYZE</button>
+            </div>
+            <div class="terminal-box">
+              <div class="terminal-bar"><span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span><span class="t-title">headers.sh</span></div>
+              <div class="terminal-content" id="term-3">
+                <span class="t-comment">Awaiting target...</span>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content learn-tab" id="tab3-learn">
+            <div class="learn-content" id="learn3"><div class="learn-intro">Run a scan first for output-specific explanations.</div></div>
+            <hr class="learn-divider"/>
+            <h4 class="learn-heading">📡 HTTP SECURITY HEADERS EXPLAINED</h4>
+            <p><span class="learn-term">Server: (e.g. nginx/1.18.0):</span> <span class="t-danger">Dangerous.</span> Leaking the server software name and version lets attackers look up exact CVEs for that version on sites like NVD and Exploit-DB.</p>
+            <p><span class="learn-term">X-Powered-By: (e.g. Express, PHP):</span> <span class="t-danger">Dangerous.</span> Reveals backend technology. Remove this header entirely in production. Attackers use it to fingerprint the tech stack.</p>
+            <p><span class="learn-term">Content-Security-Policy (CSP):</span> <span class="t-success">Required.</span> Tells the browser which scripts, styles, and resources are safe to load. Missing CSP allows <span class="t-danger">Cross-Site Scripting (XSS)</span> attacks to inject malicious code.</p>
+            <p><span class="learn-term">Strict-Transport-Security (HSTS):</span> <span class="t-success">Required.</span> Forces HTTPS. Without it, attackers can perform SSL stripping to intercept traffic on insecure networks.</p>
+            <p><span class="learn-term">X-Frame-Options: SAMEORIGIN:</span> Prevents the page from being embedded in an iframe on another domain. Missing this allows <span class="t-danger">Clickjacking</span> — where a user thinks they're clicking one thing but actually interacts with a hidden iframe.</p>
+            <p><span class="learn-term">X-XSS-Protection: 0:</span> <span class="t-warn">Deprecated header</span>, but setting it to 0 actually disables the browser's built-in (legacy) XSS filter. Rely on CSP instead of this header.</p>
+            <p><span class="learn-term">Security Score (e.g. 65/100):</span> Calculated from presence/absence of key security headers. Aim for 90+. Each missing header reduces the score and widens the attack surface.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOL 4: IP GEOLOCATION -->
+      <div class="tool-card" id="tool-4">
+        <div class="card-header">
+          <span class="card-icon">🗺️</span>
+          <div class="card-title-group">
+            <span class="card-title">IP GEOLOCATION</span>
+            <span class="diff-badge green-badge">BEGINNER</span>
+          </div>
+        </div>
+        <div class="tool-tabs">
+          <button class="tab-btn active" onclick="switchTab(4, 'scan')">SCAN</button>
+          <button class="tab-btn" onclick="switchTab(4, 'learn')">LEARN</button>
+        </div>
+        <div class="card-body">
+          <div class="tab-content scan-tab active" id="tab4-scan">
+            <div class="input-row">
+              <span class="input-prompt">>_</span>
+              <input type="text" id="input-geo" class="cyber-input" placeholder="Enter IP Address..." autocomplete="off"/>
+              <button class="cyber-btn" onclick="runTool(4)">LOCATE</button>
+            </div>
+            <div class="terminal-box">
+              <div class="terminal-bar"><span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span><span class="t-title">geo_ip.sh</span></div>
+              <div class="terminal-content" id="term-4">
+                <span class="t-comment">Tracing IP origin...</span>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content learn-tab" id="tab4-learn">
+            <div class="learn-content" id="learn4"><div class="learn-intro">Run a scan first for output-specific explanations.</div></div>
+            <hr class="learn-divider"/>
+            <h4 class="learn-heading">🗺️ IP GEOLOCATION EXPLAINED</h4>
+            <p><span class="learn-term">Country / City:</span> Geographic origin of the IP. A server claiming to be a legitimate business but hosted in a high-risk country is a red flag. OSINT investigators cross-reference this against corporate registration records.</p>
+            <p><span class="learn-term">ASN (Autonomous System Number):</span> Identifies the network block owner. <code>AS204778</code> can be looked up in ARIN/RIPE to find the organization controlling that IP range.</p>
+            <p><span class="learn-term">ISP / Organization:</span> The internet provider. Hosting providers like OVH, Hetzner, or DigitalOcean are commonly abused for C2 (Command &amp; Control) servers in malware campaigns.</p>
+            <p><span class="learn-term">Proxy / VPN / Tor flags:</span> <span class="t-danger">High risk.</span> Attackers use Tor exit nodes and commercial VPN IPs to anonymize attacks. A flagged IP should be immediately investigated and possibly blocked.</p>
+            <p><span class="learn-term">Coordinates (Lat/Long):</span> Not precise for end-user geolocation (usually city-level), but useful for identifying datacenter locations and correlating with known hosting infrastructure.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOL 5: WHOIS LOOKUP -->
+      <div class="tool-card" id="tool-5">
+        <div class="card-header">
+          <span class="card-icon">🕵️</span>
+          <div class="card-title-group">
+            <span class="card-title">WHOIS INTELLIGENCE</span>
+            <span class="diff-badge yellow-badge">INTERMEDIATE</span>
+          </div>
+        </div>
+        <div class="tool-tabs">
+          <button class="tab-btn active" onclick="switchTab(5, 'scan')">SCAN</button>
+          <button class="tab-btn" onclick="switchTab(5, 'learn')">LEARN</button>
+        </div>
+        <div class="card-body">
+          <div class="tab-content scan-tab active" id="tab5-scan">
+            <div class="input-row">
+              <span class="input-prompt">>_</span>
+              <input type="text" id="input-whois" class="cyber-input" placeholder="Enter domain..." autocomplete="off"/>
+              <button class="cyber-btn" onclick="runTool(5)">LOOKUP</button>
+            </div>
+            <div class="terminal-box">
+              <div class="terminal-bar"><span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span><span class="t-title">whois.sh</span></div>
+              <div class="terminal-content" id="term-5">
+                <span class="t-comment">Awaiting domain query...</span>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content learn-tab" id="tab5-learn">
+            <div class="learn-content" id="learn5"><div class="learn-intro">Run a scan first for output-specific explanations.</div></div>
+            <hr class="learn-divider"/>
+            <h4 class="learn-heading">🕵️ WHOIS INTELLIGENCE EXPLAINED</h4>
+            <p><span class="learn-term">Registrar:</span> The company the domain was purchased through. Attackers prefer certain registrars known for lax abuse reporting, like Namecheap or Epik, when setting up phishing domains.</p>
+            <p><span class="learn-term">Created Date:</span> <span class="t-danger">Critical indicator.</span> Domains less than 30 days old are a major phishing red flag. Legitimate companies have years-old domains; phishers spin up fresh ones.</p>
+            <p><span class="learn-term">Expiry Date / Domain Age:</span> Calculated as years/months since registration. Very short registration periods (1 year) suggest a disposable phishing or malware domain.</p>
+            <p><span class="learn-term">Name Servers:</span> DNS servers responsible for the domain. Unusual nameservers for a claimed brand (e.g., a "Google" domain using a random NS) indicates spoofing.</p>
+            <p><span class="learn-term">Privacy Protection (WhoisGuard):</span> Hides registrant contact info. While legitimate businesses use it, it's also a common tactic for malicious actors to avoid attribution.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOL 6: THREAT INTEL -->
+      <div class="tool-card" id="tool-6">
+        <div class="card-header">
+          <span class="card-icon">☠️</span>
+          <div class="card-title-group">
+            <span class="card-title">THREAT INTELLIGENCE</span>
+            <span class="diff-badge red-badge">ADVANCED</span>
+          </div>
+        </div>
+        <div class="tool-tabs">
+          <button class="tab-btn active" onclick="switchTab(6, 'scan')">SCAN</button>
+          <button class="tab-btn" onclick="switchTab(6, 'learn')">LEARN</button>
+        </div>
+        <div class="card-body">
+          <div class="tab-content scan-tab active" id="tab6-scan">
+            <div class="input-row">
+              <span class="input-prompt">>_</span>
+              <input type="text" id="input-threat" class="cyber-input" placeholder="Enter IP or Hash..." autocomplete="off"/>
+              <button class="cyber-btn" onclick="runTool(6)">CHECK</button>
+            </div>
+            <div class="terminal-box">
+              <div class="terminal-bar"><span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span><span class="t-title">threat_feed.py</span></div>
+              <div class="terminal-content" id="term-6">
+                <span class="t-comment">Awaiting IOCs for threat correlation...</span>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content learn-tab" id="tab6-learn">
+            <div class="learn-content" id="learn6"><div class="learn-intro">Run a scan first for output-specific explanations.</div></div>
+            <hr class="learn-divider"/>
+            <h4 class="learn-heading">☠️ THREAT INTELLIGENCE EXPLAINED</h4>
+            <p><span class="learn-term">IOC (Indicator of Compromise):</span> An artifact that indicates a system may have been breached. IOCs include malicious IPs, file hashes (MD5/SHA256), domain names, and URLs observed in attack campaigns.</p>
+            <p><span class="learn-term">AbuseIPDB Confidence Score:</span> A community-sourced score (0–100%) representing how likely an IP is malicious, based on number and recency of abuse reports. 90%+ means block immediately.</p>
+            <p><span class="learn-term">VirusTotal Engine Detections:</span> Cross-checks an IP/hash against 90+ antivirus and OSINT engines. Even 5–10 detections warrant investigation. 40+ means confirmed malware/botnet involvement.</p>
+            <p><span class="learn-term">Attack Categories:</span> The type of malicious activity: <span class="t-danger">DDoS</span> (volumetric attacks), <span class="t-danger">Brute Force</span> (credential attacks), <span class="t-warn">Spam</span> (phishing campaigns), <span class="t-danger">Web App Attack</span> (SQLi/XSS exploitation).</p>
+            <p><span class="learn-term">Attributed Campaign / APT Group:</span> Advanced Persistent Threat groups (e.g., Cobalt Mirage, Lazarus Group) are nation-state actors. Attribution helps predict TTPs (Tactics, Techniques, Procedures) from the MITRE ATT&amp;CK framework.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOL 7: DNS RECON -->
+      <div class="tool-card" id="tool-7">
+        <div class="card-header">
+          <span class="card-icon">🌐</span>
+          <div class="card-title-group">
+            <span class="card-title">DNS RECON</span>
+            <span class="diff-badge yellow-badge">INTERMEDIATE</span>
+          </div>
+        </div>
+        <div class="tool-tabs">
+          <button class="tab-btn active" onclick="switchTab(7, 'scan')">SCAN</button>
+          <button class="tab-btn" onclick="switchTab(7, 'learn')">LEARN</button>
+        </div>
+        <div class="card-body">
+          <div class="tab-content scan-tab active" id="tab7-scan">
+            <div class="input-row">
+              <span class="input-prompt">>_</span>
+              <input type="text" id="input-dns" class="cyber-input" placeholder="Enter domain (e.g. google.com)..." autocomplete="off"/>
+              <button class="cyber-btn" onclick="runTool(7)">RECON</button>
+            </div>
+            <div class="terminal-box">
+              <div class="terminal-bar"><span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span><span class="t-title">dns_recon.py</span></div>
+              <div class="terminal-content" id="term-7">
+                <span class="t-comment">Awaiting domain for DNS enumeration...</span>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content learn-tab" id="tab7-learn">
+            <div class="learn-content" id="learn7"><div class="learn-intro">Run a DNS scan first for output-specific explanations.</div></div>
+            <hr class="learn-divider"/>
+            <h4 class="learn-heading">🌐 DNS RECONNAISSANCE EXPLAINED</h4>
+            <p><span class="learn-term">A Records:</span> Map domain names to IPv4 addresses. Multiple A records reveal load balancing. Use discovered IPs with the IP Geolocation tool.</p>
+            <p><span class="learn-term">MX Records:</span> Mail exchange servers. Reveals what email platform the organization uses (Google Workspace, Microsoft 365). Essential for social engineering and phishing campaign targeting.</p>
+            <p><span class="learn-term">TXT Records:</span> Contain SPF, DMARC, DKIM policies. No SPF = email spoofing is trivially easy. DMARC = p=reject means spoofed emails are blocked automatically.</p>
+            <p><span class="learn-term">NS Records:</span> Nameservers authoritative for the domain. DNS hijacking attacks target the registrar to swap out NS records and gain full control of all DNS.</p>
+            <p><span class="learn-term">CAA Records:</span> Certificate Authority Authorization — restricts which CAs can issue SSL certs for this domain. Missing CAA = any CA can issue rogue certs.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /tools-grid -->
+
+  </main>
+</div><!-- /main-layout -->
+
+<!-- ═══════════ MODALS ═══════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModal(null, true)">✕ CLOSE</button>
+    <div class="modal-inner" id="modalInner"></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <span>© 2077 CYBERRECON ACADEMY — ALL SYSTEMS OPERATIONAL</span>
+  <span class="footer-sig">// STAY IN THE SHADOWS. HACK THE PLANET. //</span>
+</footer>
+
+<script src="script.js"></script>
+<script src="run_tool.js"></script>
+</body>
+</html>
