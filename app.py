@@ -27,7 +27,7 @@ from tools.dns_tool     import dns_recon
 from tools.threat_tool  import check_threat, ABUSEIPDB_API_KEY
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins="*")
 
 # ─────────────────────────────────────────────────────────────
 #  ROUTE 1 — SSL / TLS INSPECTOR
@@ -108,7 +108,7 @@ def index():
 if __name__ == "__main__":
     print("\n" + "═" * 52)
     print("  cybeRECON — Backend Server")
-    print("  Running on http://localhost:5000")
+    print("  Running on https://cyberecon.onrender.com")
     print("  Press Ctrl+C to stop")
     print("═" * 52 + "\n")
     port = int(os.environ.get("PORT", 5000))

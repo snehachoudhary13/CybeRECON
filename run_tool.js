@@ -1,10 +1,10 @@
 /* ═══════════════════════════════════════════════════════
    CYBERRECON ACADEMY — run_tool.js (Real Backend Edition)
-   All tools call Flask backend at http://localhost:5000
+   All tools call Flask backend at https://cyberecon.onrender.com
    Zero fake data. Zero Math.random(). Zero hardcoded values.
 ═══════════════════════════════════════════════════════ */
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = 'https://cyberecon.onrender.com';
 
 // ─── Inject learn-line CSS ───────────────────────────
 (function injectLearnStyles() {
