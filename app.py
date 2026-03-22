@@ -15,6 +15,7 @@
 """
 
 import os
+import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -92,6 +93,27 @@ def threat_route():
     if not target:
         return jsonify({"error": "No target provided"})
     return jsonify(check_threat(target))
+
+# ─────────────────────────────────────────────────────────────
+#  ROUTE 7 — RAW HEADERS (DEBUG)
+# ─────────────────────────────────────────────────────────────
+@app.route("/api/rawheaders")
+def raw_headers():
+    domain = request.args.get("domain", "").strip()
+    if not domain:
+        return jsonify({"error": "No domain provided"})
+    domain = domain.replace("https://", "").replace("http://", "").split("/")[0]
+    try:
+        r = requests.get(
+            f"https://{domain}",
+            timeout=8,
+            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/122.0.0.0"},
+            verify=False,
+            allow_redirects=True
+        )
+        return jsonify({"raw": dict(r.headers), "status": r.status_code, "url": r.url})
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 # ─────────────────────────────────────────────────────────────
 #  HEALTH CHECK
